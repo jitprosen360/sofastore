@@ -1,81 +1,81 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+
+import {useDispatch } from 'react-redux';
+import { Routes, Route   } from 'react-router-dom'
+import { checkUserSession } from './Redux/User/user.actions';
+import WithAuth from './Hoc/WithAuth';
+import MainLayout from './Layouts/MainLayout';
+import HomepageLayout from './Layouts/HomepageLayout';
+import Registration from './Pages/Homepages/Registration';
+import Homepage from './Pages/Homepages/Homepage';
+import Login from './Pages/Homepages/Login';
+import Recovery from './Pages/Recovery/Recovery';
+import Dashboard from './Pages/Dashboard/Dashboard';
 import styled from 'styled-components';
 import './App.css';
-import Homepage from './Pages/Homepages/Homepage';
-import Registration from './Pages/Homepages/Registration';
-import HomepageLayout from './Layouts/HomepageLayout';
-import { Routes, Route , Navigate  } from 'react-router-dom'
-import MainLayout from './Layouts/MainLayout';
-import Login from './Pages/Homepages/Login';
-import { auth , handleUserProfile } from './firebase/utils';
+import Admin from './Pages/Admin/Admin';
+import WithAdminAuth from './Hoc/withAdminAuth';
+import AdminToolbar from './Components/AdminToolbar/Admintoolbar';
+import AdminLayout from './Layouts/AdminLayout'
+import DashBoardLayout from './Layouts/DashBoardLayout';
 
-const initialState = {
-  currentUser: null
-}
+const App = props => {
+ 
+  const dispatch = useDispatch();
 
-class App extends Component{
+useEffect(()=>{    
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      ...initialState
-    };
-  }
+  dispatch(checkUserSession());
 
-  authListener = null;
-
-  componentDidMount() {
-    this.authListener = auth.onAuthStateChanged(async userAuth => {
-      if(userAuth){
-        const userRef = await handleUserProfile(userAuth);
-        userRef
-        .onSnapshot(snapshot =>{
-          this.setState({
-            currentUser:{
-              id:snapshot.id,
-              ...snapshot.data()
-            }
-          })
-        })
-      }
-
-      this.setState({
-        ...initialState
-      })
-    });
-  }
-  componentWillUnmount() {
-     
-  }
-
-
-  render() {
-
-    const { currentUser } = this.state;
+},[]);
 
     return (
       <Title>
+        <AdminToolbar />
         <Routes>
           <Route exact path="/" element={
-            <HomepageLayout currentUser={currentUser}>
+            <HomepageLayout >
               <Homepage />
             </HomepageLayout>
           } />
-          <Route exact path="/registration" element={ currentUser ? <Navigate to ="/" /> :
-            <MainLayout currentUser={currentUser}>
+          <Route exact path="/registration" element={ 
+            <MainLayout>
               <Registration />
             </MainLayout>
           } />
-          <Route exact path="/login" element={ currentUser ? <Navigate replace to="/" /> :
-            <MainLayout currentUser={currentUser}>
+          <Route exact path="/login" element={ 
+            <MainLayout >
               <Login />
             </MainLayout>
           } />
+
+            <Route exact path="/recovery" element={ 
+            <MainLayout >
+              <Recovery />
+            </MainLayout>
+          } />
+
+            <Route exact path="/dashboard" element={ 
+              <WithAuth>
+            <DashBoardLayout >
+              <Dashboard />
+            </DashBoardLayout>
+            </WithAuth>
+               } />
+
+             <Route exact path="/admin" element={ 
+              <WithAdminAuth >
+                 <AdminLayout>
+                <Admin />
+                </AdminLayout>
+              </WithAdminAuth>
+            } />
+
         </Routes>
       </Title>
     );
   }
-}
+
 
 export default App;
 

@@ -1,79 +1,84 @@
-import React, { Component } from 'react';
-import Buttons from '../Forms/Buttons'
-import { Button } from 'react-bootstrap';
-import {SignInWithGoogle, auth} from './../../firebase/utils';
+import React, { useState , useEffect } from 'react';
+import { useDispatch , useSelector} from 'react-redux';
+import { withRouter } from './../EmailPassword/withRouter';
+import { emailSignInStart , googleSignInStart } from '../../Redux/User/user.actions';
+import AuthWrapper from '../AuthWrapper/AuthWrapper';
 import FormInput from './../Forms/FormInput';
+import Buttons from '../Forms/Buttons'
+import {Link} from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
+const mapState = ({user}) => ({
+    currentUser:user.currentUser    
+})
 
-const initialState = {
-    email:'',
-    password:''
-}
+const Signin = (props) => {
 
-class Signin extends Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            ...initialState
+    const {currentUser} = useSelector(mapState); 
+    const dispatch = useDispatch();
+    const [email,setEmail] = useState('');
+    const [password , setPassword ] = useState('');
+    
+    useEffect(() =>{
+        if(currentUser){
+            resetForm();
+            props.navigate('/' , { replace:true});
+         
         }
 
-        this.handleChange = this.handleChange.bind(this);
-    }
+    },[props,currentUser])
 
-    handleChange(e){
-        const {name,value} = e.target;
-        this.setState({
-            [name]:value
-        })
-    }
-
-    handleSubmit = async e => {
-       e.preventDefault();
-       const {email,password} = this.state;
-
-       try{
-            await auth.signInWithEmailAndPassword(email,password);
-            this.setState({
-                ...initialState
-            });
-
-       }catch(err){
-            console.log(err);
-       }
+   const resetForm = () => {
+       setEmail('');
+       setPassword('');
    }
-   
-   render(){
+  const  handleSubmit = e => {
+       e.preventDefault();
+       dispatch(emailSignInStart({email,password}));
+      
+   } 
 
-    const { email,password } = this.state;
+const handleGoogleSignIn = () => {
+    dispatch(googleSignInStart());
+}
 
+    const configAuthWrapper = {
+        headline:'Login'
+    }
        return(
+           <AuthWrapper {...configAuthWrapper}>
            <div>
-           <form onSubmit={this.handleSubmit}>
+           <form onSubmit={handleSubmit}>
            <div className="login-button">
-              <h4>Login</h4>
-
               <FormInput type="email"
               name="email"
               value={email}
               placeholder="Email"
-              handleChange={this.handleChange} />
+              handleChange={e => setEmail(e.target.value)} />
 
             <FormInput type="password"
               name="password"
               value={password}
               placeholder="Password"
-              handleChange={this.handleChange} />
+              handleChange={e => setPassword(e.target.value)} />
 
             <Button className="btnc" type="Submit">Login</Button>
 
-            <Buttons className="btnc" onClick={SignInWithGoogle} />
+            <Buttons className="btnc" onClick={handleGoogleSignIn} />
 
            </div>
+
+                <div className="links">
+                    <Link className='reset' to="/recovery">
+                        Reset Password
+                    </Link>
+                </div>
+
+
            </form>
            </div>
+           </AuthWrapper>
        )
    }
-   }
-export default Signin;
+export default withRouter(Signin);
 

@@ -1,0 +1,49 @@
+.formRow {
+    display: inline-block;
+    width: 100%;
+}
+.formRow   label {
+  padding-bottom: 5px;
+      display: block;
+      float: left!important;
+    }
+  
+    .formRow   select {
+      display: block;
+      width:100%!important;
+      border:1px solid #000!important;
+      border-radius: 5px!important;
+      width: auto;
+      float: left!important;
+      font-size: 18px;
+      font-weight: 400;
+      text-align: left;
+      padding: 7px 0px;
+      margin:0px auto;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 300;
+      text-transform: uppercase;
+      color: white;
+      background: black;
+      padding: 10px 10px;
+      margin: 0 auto;
+      border: 0;
+      outline: none;
+      cursor: pointer;
+      border: 1px solid #000;
+    }
+    table { width: 100%;}
+    .btn:hover {
+      background: #fff;
+      border: 1px solid #000;
+      color: #000;
+
+    }

@@ -1,12 +1,26 @@
 import React from "react";
+import {  useSelector , useDispatch } from 'react-redux';
+import { signOutUserStart } from "../../Redux/User/user.actions";
 import styled from 'styled-components';
 import Logo from '../../assets/logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
-import {auth} from '../../firebase/utils'
+
+
+
+
+const mapState = ({user}) => ({
+    currentUser: user.currentUser
+})
 
 const Header = props => {
-    const {currentUser}= props; 
+    const dispatch = useDispatch();
+    const {currentUser} = useSelector(mapState); 
+
+    const signOut = () => {
+        dispatch(signOutUserStart());
+    }
+    
     return(
         <div className="container">
         <Headers className="header">
@@ -34,21 +48,31 @@ const Header = props => {
 
             {currentUser && (
                 <ul class="nav navbar-nav ml-auto">
+                     <li class="nav-item">
+                     <Link to="/dashboard">
+                         <a class="nav-link" href="#">My Account</a>
+                         </Link>
+                     </li>
                     <li class="nav-item">
-                       <a class="nav-link"><span onClick={()=>auth.signOut()}>LogOut</span></a> 
+                       <a class="nav-link"><span onClick={()=>signOut()}>LogOut</span></a> 
                     </li>
                 </ul>
             )}
 
             {!currentUser && (
                  <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                     <Link to="/dashboard">
+                         <a class="nav-link" href="#">My Account</a>
+                         </Link>
+                     </li>
                  <li class="nav-item">
                      <Link to="/login">
                          <a class="nav-link" href="#">Login</a>
                          </Link>
                      </li>
                      <li class="nav-item">
-                     <Link to="/Registration">
+                     <Link to="/registration">
                          <a class="nav-link" href="#">Register</a>
                      </Link>
                      </li>
@@ -95,7 +119,7 @@ const Header = props => {
 }
 
 Header.defaultProps = {
-    currentUser:null
+    currentUser: null
 }
 
 export default Header;
