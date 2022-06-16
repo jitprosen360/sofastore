@@ -5,7 +5,8 @@ import Modal from './../../Components/Modal/Modal';
 import FormInput from './../../Components/Forms/FormInput';
 import FormSelect from './../../Components/Forms/FormSelect';
 import Button from './../../Components/Forms/Button';
-// import CKEditor from 'ckeditor4-react';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import LoadMore from './../../Components/LoadMore/LoadMore';
 
 import './styles.css';
@@ -137,6 +138,19 @@ const Admin = (props) => {
             {/* <CKEditor
               onChange={evt => setProductDesc(evt.editor.getData())}
             /> */}
+            {  <CKEditor
+                    editor={ ClassicEditor }
+                    data=""
+                    // onReady={ ( event, editor )  => {
+                    // const data = event => setProductDesc(event.editor.getData(data))
+                    //     console.log( 'Editor is ready to use!', editor );
+                    // } }
+                    onChange={ ( event, editor ) => {
+                        const data = setProductDesc(editor.getData());
+                        console.log( { event, editor, data } );
+                    } }
+                 
+                />}
 
             <br />
 

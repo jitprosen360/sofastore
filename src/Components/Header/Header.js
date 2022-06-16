@@ -5,17 +5,18 @@ import styled from 'styled-components';
 import Logo from '../../assets/logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
+import { selectCartItemsCount } from "../../Redux/Cart/cart.selectors";
 
 
 
-
-const mapState = ({user}) => ({
-    currentUser: user.currentUser
+const mapState = (state) => ({
+    currentUser: state.user.currentUser,
+    taotalNumCartItems : selectCartItemsCount(state)
 })
 
 const Header = props => {
     const dispatch = useDispatch();
-    const {currentUser} = useSelector(mapState); 
+    const {currentUser , taotalNumCartItems} = useSelector(mapState); 
 
     const signOut = () => {
         dispatch(signOutUserStart());
@@ -33,20 +34,36 @@ const Header = props => {
     <div class="navbar-collapse collapse dual-nav w-100">
     <form class="ml-3 my-auto d-inline w-100">
             <div class="input-group">
+                <Link to="/search">
+                {/* <i class="fa fa-search"></i> */}
               <input type="text" class="form-control border-right-0" placeholder="Search" /> 
-              <i class="fa fa-search"></i>
+             
+              </Link>
             </div>
         </form>
     </div>
-    <a href="/" class="navbar-brand mx-auto d-block text-center w-100">   <div className="logo">
+    <a href="/" class="navbar-brand mx-auto d-block text-center">   <div className="logo">
                     <Link to="/">
                     <img src={Logo} alt="Logo" />
                     </Link>
                    
                 </div></a>
+
+                
     <div class="navbar-collapse collapse dual-nav w-100">
 
-            {currentUser && (
+        
+    <ul class="nav navbar-nav ml-auto">
+                     <li class="nav-item">
+                     <Link to="/cart">
+                         <a class="nav-link" href="#">My Cart ({taotalNumCartItems})</a>
+                         </Link>
+                     </li>
+                 
+                </ul>
+      
+
+            {currentUser && [
                 <ul class="nav navbar-nav ml-auto">
                      <li class="nav-item">
                      <Link to="/dashboard">
@@ -57,9 +74,9 @@ const Header = props => {
                        <a class="nav-link"><span onClick={()=>signOut()}>LogOut</span></a> 
                     </li>
                 </ul>
-            )}
+            ]}
 
-            {!currentUser && (
+            {!currentUser && [
                  <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item">
                      <Link to="/dashboard">
@@ -78,7 +95,9 @@ const Header = props => {
                      </li>
                      
                  </ul>
-            )}
+            ]}
+
+
 
        
     </div>

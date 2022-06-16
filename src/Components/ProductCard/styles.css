@@ -1,0 +1,29 @@
+.productCard {
+    max-width: 80.0rem;
+    margin: 0 auto 10.0rem;
+    }
+.hero {
+        display: block;
+        width: 100%;
+        margin: 2rem auto;
+    }
+.hero img {
+          display: block;
+          width: 100%;
+          margin: 0;
+        }
+        .productDetails { float: left; padding-top: 30px;}
+.productDetails   h3 {
+        text-align: left;
+      }
+.addToCart {
+      max-width:200px;
+      margin:0 auto;
+    }
+    .dropdown label { text-align: left;}
+.dropdown select { 
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: left;
+}

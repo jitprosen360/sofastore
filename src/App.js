@@ -18,6 +18,9 @@ import WithAdminAuth from './Hoc/withAdminAuth';
 import AdminToolbar from './Components/AdminToolbar/Admintoolbar';
 import AdminLayout from './Layouts/AdminLayout'
 import DashBoardLayout from './Layouts/DashBoardLayout';
+import Search from './Pages/Search/Search';
+import ProductDetails from './Pages/ProductDetails/ProductDetails';
+import Cart from './Pages/Cart/Cart';
 
 const App = props => {
  
@@ -38,6 +41,27 @@ useEffect(()=>{
               <Homepage />
             </HomepageLayout>
           } />
+             <Route  path="/search" element={
+            <HomepageLayout >
+              <Search />
+            </HomepageLayout>
+          } />
+              <Route  path="/search/:filterType" element={
+            <HomepageLayout >
+              <Search />
+            </HomepageLayout>
+          } />
+            <Route  path="/product/:productID" element={
+            <HomepageLayout >
+              <ProductDetails />
+            </HomepageLayout>
+          } />
+                <Route  path="/cart" element={
+            <HomepageLayout >
+              <Cart />
+            </HomepageLayout>
+          } />
+
           <Route exact path="/registration" element={ 
             <MainLayout>
               <Registration />

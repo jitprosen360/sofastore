@@ -74,6 +74,7 @@ export function* fetchProduct({ payload }) {
 }
 
 export function* onFetchProductStart() {
+  
   yield takeLatest(productsTypes.FETCH_PRODUCT_START, fetchProduct);
 }
 
